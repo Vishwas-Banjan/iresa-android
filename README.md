@@ -6,7 +6,6 @@ Iresa Android is one of the two components of Iresa's Playlist Management. This 
 
 ## Features
 
-### General Features
 - Login to specific station using barcode scanning
 - View a list of songs suggested by the station's owner
 - Vote for one or more songs
