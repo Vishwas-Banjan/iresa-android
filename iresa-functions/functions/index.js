@@ -9,11 +9,14 @@ exports.updateUpvoteCount = functions.firestore
     .onWrite((change, context) => {
         const newDocument = change.after.data();
         const oldDocument = change.before.data();
-        if (newDocument.upvotes.length == oldDocument.upvotes.length) return null;
-        let count = newDocument.upvotes.length;
-        if (!count) {
+        let count;
+        if (newDocument.upvotes == undefined) {
             count = 0;
+        } else {
+            count = newDocument.upvotes.length;
+            if (newDocument.upvotes.length == oldDocument.upvotes.length) return null;
         }
+
         return change.after.ref.set({
             upvoteCount: count
         }, {merge: true});
