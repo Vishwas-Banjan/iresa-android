@@ -1,14 +1,6 @@
-# Iresa Android
-
-Iresa offers a nice, convenient solution to help business owners customize their music’s playlist by allowing their own customers to vote for their favorite songs to play during their visits.
-
-Iresa Android is one of the two components of Iresa's Playlist Management. This component is an Android native mobile application that allows users to vote for their favorite songs suggested by stations' owners.
-
-## Features
-
-- Login to specific station using barcode scanning
-- View a list of songs suggested by the station's owner
-- Vote for one or more songs
-- Update UI in real time whenever a new list of songs is available to vote
-
-
+![Image 1](https://github.com/Vishwas-Banjan/iresa-android/blob/master/resources/01.%20Welcome%20Light.png)<br />
+![Image 2](https://github.com/Vishwas-Banjan/iresa-android/blob/master/resources/02.%20Light.png)<br />
+![Image 3](https://github.com/Vishwas-Banjan/iresa-android/blob/master/resources/03.%20Walkthrough2%20%E2%80%93%201.png)<br />
+![Image 4](https://github.com/Vishwas-Banjan/iresa-android/blob/master/resources/04.%20Walkthrough3%20%E2%80%93%201.png)<br />
+![Image 5](https://github.com/Vishwas-Banjan/iresa-android/blob/master/resources/05.%20Login%20Light.png)<br />
+![Image 6](https://github.com/Vishwas-Banjan/iresa-android/blob/master/resources/06.%20Songs.png)
