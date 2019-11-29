@@ -6,12 +6,19 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "demo";
+    NavController navController;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
 
                     //  Apply changes
                     e.apply();
+                } else {
+                    navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
+                    navController.navigate(R.id.action_welcomeFragment_to_scanCodeFragment);
+
                 }
             }
         });

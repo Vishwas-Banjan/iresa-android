@@ -9,5 +9,27 @@
         android:id="@+id/welcomeFragment"
         android:name="com.vbanjan.iresa.Fragment.WelcomeFragment"
         android:label="fragment_welcome"
-        tools:layout="@layout/fragment_welcome" />
+        tools:layout="@layout/fragment_welcome">
+        <action
+            android:id="@+id/action_welcomeFragment_to_scanCodeFragment"
+            app:destination="@id/scanCodeFragment"
+            app:popUpTo="@id/scanCodeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/scanCodeFragment"
+        android:name="com.vbanjan.iresa.Fragment.ScanCodeFragment"
+        android:label="fragment_scan_code"
+        tools:layout="@layout/fragment_scan_code">
+        <action
+            android:id="@+id/action_scanCodeFragment_to_songsListFragment"
+            app:destination="@id/songsListFragment"
+            app:popUpTo="@+id/scanCodeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/songsListFragment"
+        android:name="com.vbanjan.iresa.Fragment.SongsListFragment"
+        android:label="fragment_songs_list"
+        tools:layout="@layout/fragment_songs_list" />
 </navigation>
