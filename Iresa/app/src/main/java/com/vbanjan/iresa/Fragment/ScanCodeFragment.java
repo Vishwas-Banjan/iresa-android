@@ -71,6 +71,8 @@ public class ScanCodeFragment extends Fragment {
     }
 
     private void readBarcodeValue() {
+        final Bundle bundle = new Bundle();
+
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
             @Override
             public void release() {
@@ -78,7 +80,8 @@ public class ScanCodeFragment extends Fragment {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        navController.navigate(R.id.action_scanCodeFragment_to_songsListFragment);
+                        if (!bundle.get("barCodeValue").equals("") || bundle.get("barCodeValue") != null)
+                            navController.navigate(R.id.action_scanCodeFragment_to_songsListFragment, bundle);
                     }
                 });
             }
@@ -87,15 +90,19 @@ public class ScanCodeFragment extends Fragment {
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 SparseArray<Barcode> qrCodes = detections.getDetectedItems();
                 if (qrCodes.size() != 0) {
-                    Log.d("demo", "receiveDetections: " + qrCodes.valueAt(0).displayValue);
-                    Vibrator vibrator = (Vibrator) getActivity().getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                    vibrator.vibrate(100); //Vibrate phone on detection
+                    bundle.putString("barCodeValue", qrCodes.valueAt(0).displayValue);
+                    vibratePhone(); //Vibrate phone on detection
                     release();
                 } else {
                     Log.d("demo", "receiveDetections: No Value detected");
                 }
             }
         });
+    }
+
+    private void vibratePhone() {
+        Vibrator vibrator = (Vibrator) getActivity().getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(100); //Vibrate phone on detection
     }
 
     private void setCameraToSurfaceView() {

@@ -31,5 +31,9 @@
         android:id="@+id/songsListFragment"
         android:name="com.vbanjan.iresa.Fragment.SongsListFragment"
         android:label="fragment_songs_list"
-        tools:layout="@layout/fragment_songs_list" />
+        tools:layout="@layout/fragment_songs_list" >
+        <argument
+            android:name="barCodeValue"
+            app:argType="string" />
+    </fragment>
 </navigation>

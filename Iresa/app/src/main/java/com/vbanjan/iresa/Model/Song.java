@@ -3,14 +3,15 @@ package com.vbanjan.iresa.Model;
 import java.util.ArrayList;
 
 public class Song {
-    ArrayList<String> artists;
+    ArrayList<Artist> artists;
     String documentID, songID, songTitle;
-    String imageURL, songURI, imageHeight, imageWidth;
+    String imageURL, songURI;
+    Long imageHeight, imageWidth;
 
     public Song() {
     }
 
-    public Song(ArrayList<String> artists, String documentID, String songID, String songTitle, String imageURL, String songURI, String imageHeight, String imageWidth) {
+    public Song(ArrayList<Artist> artists, String documentID, String songID, String songTitle, String imageURL, String songURI, Long imageHeight, Long imageWidth) {
         this.artists = artists;
         this.documentID = documentID;
         this.songID = songID;
@@ -35,11 +36,11 @@ public class Song {
                 '}';
     }
 
-    public ArrayList<String> getArtists() {
+    public ArrayList<Artist> getArtists() {
         return artists;
     }
 
-    public void setArtists(ArrayList<String> artists) {
+    public void setArtists(ArrayList<Artist> artists) {
         this.artists = artists;
     }
 
@@ -83,19 +84,19 @@ public class Song {
         this.songURI = songURI;
     }
 
-    public String getImageHeight() {
+    public Long getImageHeight() {
         return imageHeight;
     }
 
-    public void setImageHeight(String imageHeight) {
+    public void setImageHeight(Long imageHeight) {
         this.imageHeight = imageHeight;
     }
 
-    public String getImageWidth() {
+    public Long getImageWidth() {
         return imageWidth;
     }
 
-    public void setImageWidth(String imageWidth) {
+    public void setImageWidth(Long imageWidth) {
         this.imageWidth = imageWidth;
     }
 }
