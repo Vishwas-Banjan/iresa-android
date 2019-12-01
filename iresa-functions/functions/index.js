@@ -7,6 +7,9 @@ admin.initializeApp();
 exports.updateUpvoteCount = functions.firestore
     .document('stations/{storeId}/songList/{songId}')
     .onWrite((change, context) => {
+        if (!change.after.exists()) {
+            return null;
+        }
         const newDocument = change.after.data();
         let count;
         if (newDocument.upvotes == undefined) {
