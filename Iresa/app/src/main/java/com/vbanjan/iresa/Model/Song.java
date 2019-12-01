@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Song {
     ArrayList<Artist> artists;
+    ArrayList<String> upvotes;
     String documentID, songID, songTitle;
     String imageURL, songURI;
     Long imageHeight, imageWidth;
@@ -11,7 +12,7 @@ public class Song {
     public Song() {
     }
 
-    public Song(ArrayList<Artist> artists, String documentID, String songID, String songTitle, String imageURL, String songURI, Long imageHeight, Long imageWidth) {
+    public Song(ArrayList<Artist> artists, String documentID, String songID, String songTitle, String imageURL, String songURI, Long imageHeight, Long imageWidth, ArrayList<String> upvotes) {
         this.artists = artists;
         this.documentID = documentID;
         this.songID = songID;
@@ -20,6 +21,15 @@ public class Song {
         this.songURI = songURI;
         this.imageHeight = imageHeight;
         this.imageWidth = imageWidth;
+        this.upvotes = upvotes;
+    }
+
+    public ArrayList<String> getUpvotes() {
+        return upvotes;
+    }
+
+    public void setUpvotes(ArrayList<String> upvotes) {
+        this.upvotes = upvotes;
     }
 
     @Override

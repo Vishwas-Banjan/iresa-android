@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +33,8 @@ public class StoreDetailsFragment extends Fragment {
     String storeSecretKey;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     TextView storeName, storeAddress;
-    Button nextButton;
+    ImageView nextButton;
+    String storeID = null;
     private ProgressDialog progressDialog;
     NavController navController;
 
@@ -57,6 +59,18 @@ public class StoreDetailsFragment extends Fragment {
             progressDialog.show();
         }
 
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                if (storeID != null) {
+                    bundle.putString("storeDocID", storeID);
+                    navController.navigate(R.id.action_storeDetailsFragment_to_songsListFragment, bundle);
+                } else {
+                    Log.d(TAG, "onClick: Store ID Null");
+                }
+            }
+        });
 
     }
 
@@ -101,14 +115,9 @@ public class StoreDetailsFragment extends Fragment {
         storeName.setText(store.getStoreName());
         storeAddress.setText(store.getStoreStreet() + ", " + store.getStoreCity() + ", " + store.getStoreState() + ", " + store.getStoreZip());
         if (progressDialog.isShowing()) progressDialog.dismiss();
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("storeDocID", store.getStoreDocumentID());
-                navController.navigate(R.id.action_storeDetailsFragment_to_songsListFragment, bundle);
-            }
-        });
+        storeID = store.getStoreDocumentID();
+        Log.d(TAG, "showStoreDetails: " + storeID);
+        if (storeID != null) nextButton.setVisibility(View.VISIBLE);
 
     }
 

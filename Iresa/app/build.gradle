@@ -4,6 +4,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
+        vectorDrawables.useSupportLibrary = true
         applicationId "com.vbanjan.iresa"
         minSdkVersion 16
         multiDexEnabled true
@@ -40,5 +41,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:21.3.0'
     def cardview_version = "1.0.0"
     implementation "androidx.cardview:cardview:$cardview_version"
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }
 apply plugin: 'com.google.gms.google-services'

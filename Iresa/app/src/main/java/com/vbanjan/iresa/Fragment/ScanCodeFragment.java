@@ -78,12 +78,16 @@ public class ScanCodeFragment extends Fragment {
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
             @Override
             public void release() {
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(new Runnable() {
+                getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (!bundle.get("storeSecretKey").equals("") || bundle.get("storeSecretKey") != null)
-                            navController.navigate(R.id.action_scanCodeFragment_to_storeDetailsFragment, bundle);
+                        if (!bundle.get("storeSecretKey").equals("") || bundle.get("storeSecretKey") != null) {
+                            if (navController.getCurrentDestination().getId() == R.id.scanCodeFragment) {
+                                navController.navigate(R.id.action_scanCodeFragment_to_storeDetailsFragment, bundle);
+                            }
+                        } else {
+                            Log.d(TAG, "run: Bundle Empty");
+                        }
                     }
                 });
             }
@@ -92,6 +96,7 @@ public class ScanCodeFragment extends Fragment {
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 SparseArray<Barcode> qrCodes = detections.getDetectedItems();
                 if (qrCodes.size() != 0) {
+                    Log.d(TAG, "receiveDetections: " + qrCodes.valueAt(0).displayValue);
                     bundle.putString("storeSecretKey", qrCodes.valueAt(0).displayValue);
                     vibratePhone(); //Vibrate phone on detection
                     release();

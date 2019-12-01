@@ -14,6 +14,8 @@ import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import java.util.UUID;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "demo";
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
                     //  Edit preference to make it false because we don't want this to run again
                     e.putBoolean("firstStart", false);
-
+                    e.putString("uniqueID", String.valueOf(UUID.randomUUID()));
                     //  Apply changes
                     e.apply();
                 } else {

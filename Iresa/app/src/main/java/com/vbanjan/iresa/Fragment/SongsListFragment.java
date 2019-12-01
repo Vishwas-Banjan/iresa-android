@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -21,6 +24,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.vbanjan.iresa.Model.Artist;
 import com.vbanjan.iresa.Model.Song;
+import com.vbanjan.iresa.Adapter.SongListRecyclerViewAdapter;
 import com.vbanjan.iresa.R;
 
 import java.util.ArrayList;
@@ -33,6 +37,9 @@ public class SongsListFragment extends Fragment {
     ArrayList<Song> songList = new ArrayList<>();
     ProgressDialog progressDialog;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     public SongsListFragment() {
         // Required empty public constructor
@@ -41,6 +48,16 @@ public class SongsListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        recyclerView = view.findViewById(R.id.songListRecyclerView);
+        firestoreListener();
+    }
+
+    public void setUpRecyclerView() {
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        mAdapter = new SongListRecyclerViewAdapter(songList, storeID, getContext());
+        recyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -51,43 +68,58 @@ public class SongsListFragment extends Fragment {
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Getting list of songs...");
         progressDialog.setCancelable(false);
-
-        firestoreListener();
         return inflater.inflate(R.layout.fragment_songs_list, container, false);
     }
 
     private void firestoreListener() {
         if (storeID != null) {
             progressDialog.show();
-            db.collection("stations").document(storeID).collection("songList").addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                    if (e != null) {
-                        if (progressDialog.isShowing()) progressDialog.dismiss();
-                        Log.w(TAG, "Listen failed.", e);
-                        Toast.makeText(getContext(), "Oops! Something went wrong", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                        ArrayList<Artist> artistList = new ArrayList<>();
-                        if (doc.get("name") != null) {
-                            ArrayList<HashMap<String, String>> artistsMap = (ArrayList<HashMap<String, String>>) doc.get("artists");
-                            for (HashMap<String, String> artist : artistsMap) {
-                                artistList.add(new Artist(artist.get("name")));
+            db.collection("stations").document(storeID).collection("songList")
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                            if (e != null) {
+                                if (progressDialog.isShowing()) progressDialog.dismiss();
+                                Log.w(TAG, "Listen failed.", e);
+                                Toast.makeText(getContext(), "Oops! Something went wrong", Toast.LENGTH_SHORT).show();
+                                return;
                             }
-                            ArrayList<HashMap<String, String>> imagesList = (ArrayList<HashMap<String, String>>) doc.get("images");
-                            ArrayList<HashMap<String, Long>> imagesSizeList = (ArrayList<HashMap<String, Long>>) doc.get("images");
-                            Song song = new Song(artistList, doc.getId(),
-                                    doc.getString("id"), doc.getString("name"),
-                                    imagesList.get(0).get("url"), doc.getString("uri"),
-                                    Long.valueOf(imagesSizeList.get(0).get("height")), Long.valueOf(imagesSizeList.get(0).get("width")));
-                            songList.add(song);
+
+                            for (DocumentChange dc : queryDocumentSnapshots.getDocumentChanges()) {
+                                switch (dc.getType()) {
+                                    //To avoid fetching the list and refreshing when Up-Voted or document modified
+                                    case ADDED:
+                                    case REMOVED:
+                                        songList.clear();
+                                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                                            ArrayList<Artist> artistList = new ArrayList<>();
+                                            ArrayList<String> upvoteList = new ArrayList<>();
+                                            if (doc.get("name") != null) {
+                                                ArrayList<HashMap<String, String>> artistsMap = (ArrayList<HashMap<String, String>>) doc.get("artists");
+                                                for (HashMap<String, String> artist : artistsMap) {
+                                                    artistList.add(new Artist(artist.get("name")));
+                                                }
+                                                if (doc.get("upvotes") != null) {
+                                                    upvoteList.addAll((ArrayList<String>) doc.get("upvotes"));
+                                                }
+                                                ArrayList<HashMap<String, String>> imagesList = (ArrayList<HashMap<String, String>>) doc.get("images");
+                                                ArrayList<HashMap<String, Long>> imagesSizeList = (ArrayList<HashMap<String, Long>>) doc.get("images");
+                                                Song song = new Song(artistList, doc.getId(),
+                                                        doc.getString("id"), doc.getString("name"),
+                                                        imagesList.get(0).get("url"), doc.getString("uri"),
+                                                        Long.valueOf(imagesSizeList.get(0).get("height")), Long.valueOf(imagesSizeList.get(0).get("width")),
+                                                        upvoteList);
+                                                songList.add(song);
+                                            }
+                                        }
+                                        setUpRecyclerView();
+                                        if (progressDialog.isShowing()) progressDialog.dismiss();
+                                        break;
+                                }
+                            }
+
                         }
-                    }
-                    if (progressDialog.isShowing()) progressDialog.dismiss();
-                }
-            });
+                    });
         }
     }
 }
