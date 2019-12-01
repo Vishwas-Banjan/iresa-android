@@ -13,7 +13,7 @@
         <action
             android:id="@+id/action_welcomeFragment_to_scanCodeFragment"
             app:destination="@id/scanCodeFragment"
-            app:popUpTo="@id/scanCodeFragment"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -22,10 +22,8 @@
         android:label="fragment_scan_code"
         tools:layout="@layout/fragment_scan_code">
         <action
-            android:id="@+id/action_scanCodeFragment_to_songsListFragment"
-            app:destination="@id/songsListFragment"
-            app:popUpTo="@+id/scanCodeFragment"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_scanCodeFragment_to_storeDetailsFragment"
+            app:destination="@id/storeDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/songsListFragment"
@@ -33,7 +31,19 @@
         android:label="fragment_songs_list"
         tools:layout="@layout/fragment_songs_list" >
         <argument
-            android:name="barCodeValue"
+            android:name="storeDocID"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/storeDetailsFragment"
+        android:name="com.vbanjan.iresa.Fragment.StoreDetailsFragment"
+        android:label="fragment_store_details"
+        tools:layout="@layout/fragment_store_details">
+        <argument
+            android:name="storeSecretKey"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_storeDetailsFragment_to_songsListFragment"
+            app:destination="@id/songsListFragment" />
     </fragment>
 </navigation>

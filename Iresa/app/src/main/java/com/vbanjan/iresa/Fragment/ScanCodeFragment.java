@@ -20,6 +20,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -52,13 +53,14 @@ public class ScanCodeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
         surfaceView = view.findViewById(R.id.cameraSurfaceView);
+        navController = Navigation.findNavController(view);
         barcodeDetector = new BarcodeDetector.Builder(getActivity().getApplicationContext())
                 .setBarcodeFormats(Barcode.QR_CODE).build();
 
         if (!barcodeDetector.isOperational()) {
             Log.d("demo", "onViewCreated: Barcode Detector not operational!");
+            Toast.makeText(getContext(), "Oops! Something went wrong!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -80,8 +82,8 @@ public class ScanCodeFragment extends Fragment {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (!bundle.get("barCodeValue").equals("") || bundle.get("barCodeValue") != null)
-                            navController.navigate(R.id.action_scanCodeFragment_to_songsListFragment, bundle);
+                        if (!bundle.get("storeSecretKey").equals("") || bundle.get("storeSecretKey") != null)
+                            navController.navigate(R.id.action_scanCodeFragment_to_storeDetailsFragment, bundle);
                     }
                 });
             }
@@ -90,7 +92,7 @@ public class ScanCodeFragment extends Fragment {
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 SparseArray<Barcode> qrCodes = detections.getDetectedItems();
                 if (qrCodes.size() != 0) {
-                    bundle.putString("barCodeValue", qrCodes.valueAt(0).displayValue);
+                    bundle.putString("storeSecretKey", qrCodes.valueAt(0).displayValue);
                     vibratePhone(); //Vibrate phone on detection
                     release();
                 } else {
