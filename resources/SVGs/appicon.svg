@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26.378" height="28.483" viewBox="0 0 26.378 28.483">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ee0979"/>
+      <stop offset="1" stop-color="#ff6a00"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_478" data-name="Group 478" transform="translate(-98 -312)">
+    <g id="music-logo-solid" transform="translate(98 312)">
+      <circle id="Ellipse_16" data-name="Ellipse 16" cx="1.688" cy="1.688" r="1.688" transform="translate(0 3.398)" fill="url(#linear-gradient)"/>
+      <path id="Path_650" data-name="Path 650" d="M46.58,51.4l5.473,3.165a1.659,1.659,0,0,1,0,2.875L46.58,60.6a1.653,1.653,0,0,1-2.48-1.438V52.836A1.649,1.649,0,0,1,46.58,51.4Z" transform="translate(-37.275 -42.773)" fill="url(#linear-gradient)"/>
+      <path id="Path_651" data-name="Path 651" d="M4.287,11.324A1.913,1.913,0,0,0,2.4,9.374a1.925,1.925,0,0,0-1.9,1.95V24a4.887,4.887,0,0,0,2.137,4.388,3.794,3.794,0,0,0,1.989.533A5.457,5.457,0,0,0,7.382,28.1l17.2-10.268a4.81,4.81,0,0,0,.015-8.2L9.754.706a1.846,1.846,0,0,0-2.579.7,1.979,1.979,0,0,0,.678,2.666l9.593,5.774a4.775,4.775,0,0,1,1.945,3.885,4.715,4.715,0,0,1-1.739,3.717l-6.97,4.159a4.437,4.437,0,0,1-4.141-.229,4.657,4.657,0,0,1-2.255-4.007Z" transform="translate(-0.5 -0.437)" fill="url(#linear-gradient)"/>
+    </g>
+  </g>
+</svg>
