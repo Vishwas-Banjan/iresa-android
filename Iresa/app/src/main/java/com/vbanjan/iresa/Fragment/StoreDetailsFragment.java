@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.vbanjan.iresa.MainActivity;
 import com.vbanjan.iresa.Model.Store;
 import com.vbanjan.iresa.R;
 
@@ -57,6 +58,8 @@ public class StoreDetailsFragment extends Fragment {
             storeSecretKey = getArguments().getString("storeSecretKey");
             fetchStoreDetails();
             progressDialog.show();
+        } else {
+            storeIdNotFound("Oops! Something went wrong!");
         }
 
         nextButton.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +70,7 @@ public class StoreDetailsFragment extends Fragment {
                     bundle.putString("storeDocID", storeID);
                     navController.navigate(R.id.action_storeDetailsFragment_to_songsListFragment, bundle);
                 } else {
-                    Log.d(TAG, "onClick: Store ID Null");
+                    storeIdNotFound("Oops! Something went wrong!");
                 }
             }
         });
@@ -91,14 +94,19 @@ public class StoreDetailsFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
-                                Store store = null;
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    store = new Store(document.getString("name"),
-                                            document.getString("address"), document.getString("state"),
-                                            document.getString("zipCode"), document.getString("city"), document.getId());
+                                if (task.getResult().size() >= 1) {
+                                    Store store = null;
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        store = new Store(document.getString("name"),
+                                                document.getString("address"), document.getString("state"),
+                                                document.getString("zipCode"), document.getString("city"), document.getId());
+                                    }
+                                    if (store != null)
+                                        showStoreDetails(store);
+
+                                } else {
+                                    storeIdNotFound("Store ID not found! Please contact front desk!");
                                 }
-                                if (store != null)
-                                    showStoreDetails(store);
                             } else {
                                 if (progressDialog.isShowing()) progressDialog.dismiss();
                                 Toast.makeText(getContext(), "Oops! Something's not right", Toast.LENGTH_SHORT).show();
@@ -107,8 +115,14 @@ public class StoreDetailsFragment extends Fragment {
                         }
                     });
         } else {
-            Toast.makeText(getContext(), "Oops! Something went wrong!", Toast.LENGTH_SHORT).show();
+            storeIdNotFound("Oops! Something went wrong!");
         }
+    }
+
+    public void storeIdNotFound(String message) {
+        if (progressDialog.isShowing()) progressDialog.dismiss();
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        navController.popBackStack(); //Go back if Store not found
     }
 
     private void showStoreDetails(final Store store) {

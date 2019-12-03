@@ -37,6 +37,7 @@ public class ScanCodeFragment extends Fragment {
     CameraSource cameraSource;
     BarcodeDetector barcodeDetector;
     NavController navController;
+    private onScanCodeFragmentListener mListener;
 
     public ScanCodeFragment() {
         // Required empty public constructor
@@ -83,7 +84,7 @@ public class ScanCodeFragment extends Fragment {
                     public void run() {
                         if (!bundle.get("storeSecretKey").equals("") || bundle.get("storeSecretKey") != null) {
                             if (navController.getCurrentDestination().getId() == R.id.scanCodeFragment) {
-                                navController.navigate(R.id.action_scanCodeFragment_to_storeDetailsFragment, bundle);
+                                mListener.navigateScanCodeToStoreDetail(bundle);
                             }
                         } else {
                             Log.d(TAG, "run: Bundle Empty");
@@ -100,8 +101,6 @@ public class ScanCodeFragment extends Fragment {
                     bundle.putString("storeSecretKey", qrCodes.valueAt(0).displayValue);
                     vibratePhone(); //Vibrate phone on detection
                     release();
-                } else {
-                    Log.d("demo", "receiveDetections: No Value detected");
                 }
             }
         });
@@ -133,5 +132,27 @@ public class ScanCodeFragment extends Fragment {
                 cameraSource.stop();
             }
         });
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof onScanCodeFragmentListener) {
+            mListener = (onScanCodeFragmentListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface onScanCodeFragmentListener {
+        void navigateScanCodeToStoreDetail(Bundle bundle);
     }
 }

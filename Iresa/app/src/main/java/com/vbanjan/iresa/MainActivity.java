@@ -12,11 +12,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
+
+import com.vbanjan.iresa.Fragment.ScanCodeFragment;
 
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ScanCodeFragment.onScanCodeFragmentListener {
 
     private static final String TAG = "demo";
     NavController navController;
@@ -26,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
     }
 
     @Override
@@ -63,14 +65,33 @@ public class MainActivity extends AppCompatActivity {
                     e.apply();
                 } else {
                     navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
-                    navController.navigate(R.id.action_welcomeFragment_to_scanCodeFragment);
-
+                    if (navController.getCurrentDestination().getId() == R.id.songsListFragment ||
+                            navController.getCurrentDestination().getId() == R.id.storeDetailsFragment) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                MainActivity.super.onResume();
+                            }
+                        });
+                    } else {
+                        navController
+                                .navigate(R.id.scanCodeFragment,
+                                        null,
+                                        new NavOptions.Builder()
+                                                .setPopUpTo(navController.getGraph().getId(),
+                                                        true)
+                                                .build());
+                    }
                 }
             }
         });
         // Start the thread
         t.start();
-
         super.onResume();
+    }
+
+    @Override
+    public void navigateScanCodeToStoreDetail(Bundle bundle) {
+        navController.navigate(R.id.action_scanCodeFragment_to_storeDetailsFragment, bundle);
     }
 }

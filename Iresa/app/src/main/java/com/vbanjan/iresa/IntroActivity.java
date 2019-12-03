@@ -1,20 +1,17 @@
 package com.vbanjan.iresa;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.github.paolorotolo.appintro.AppIntro;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import com.github.paolorotolo.appintro.AppIntro2;
 import com.vbanjan.iresa.Fragment.WalkThroughFragment01;
 import com.vbanjan.iresa.Fragment.WalkThroughFragment02;
