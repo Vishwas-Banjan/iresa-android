@@ -7,9 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,22 +21,29 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.SettingsClient;
 import com.vbanjan.iresa.Fragment.ScanCodeFragment;
 import com.vbanjan.iresa.Fragment.StoreDetailsFragment;
 import com.vbanjan.iresa.Model.Store;
 
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity implements LocationListener,
+import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
+
+public class MainActivity extends AppCompatActivity implements
         ScanCodeFragment.onScanCodeFragmentListener,
         StoreDetailsFragment.onStoreDetailsFragment {
 
     private static final String TAG = "demo";
     NavController navController;
-    LocationManager locationManager;
     Store store = null;
-    int locationMinTime = 600000;
-    int locationMinDistance = 300;
+    private LocationRequest mLocationRequest;
+    int locationMinTime = 10 * 60000; //10 minutes
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +66,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                         == PackageManager.PERMISSION_DENIED)) {
             //  Launch app intro
-            final Intent i = new Intent(MainActivity.this, IntroActivity.class);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    startActivity(i);
-                }
-            });
+            Intent i = new Intent(MainActivity.this, IntroActivity.class);
+            startActivity(i);
 
             //  Make a new preferences editor
             SharedPreferences.Editor e = getPrefs.edit();
@@ -76,21 +78,22 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             //  Apply changes
             e.apply();
         } else {
-            //Permission requested on AppIntro
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.this);
-            navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
-            if (navController.getCurrentDestination().getId() == R.id.songsListFragment ||
-                    navController.getCurrentDestination().getId() == R.id.storeDetailsFragment) {
-                super.onResume();
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) { //Check if GPS Enabled
+                buildAlertMessageNoGps();
             } else {
-                navController
-                        .navigate(R.id.scanCodeFragment,
-                                null,
-                                new NavOptions.Builder()
-                                        .setPopUpTo(navController.getGraph().getId(),
-                                                true)
-                                        .build());
+                startLocationUpdates(); //Get and compare user's location
+                navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
+                if (navController.getCurrentDestination().getId() != R.id.songsListFragment &&
+                        navController.getCurrentDestination().getId() != R.id.storeDetailsFragment) {
+                    navController
+                            .navigate(R.id.scanCodeFragment,
+                                    null,
+                                    new NavOptions.Builder()
+                                            .setPopUpTo(navController.getGraph().getId(),
+                                                    true)
+                                            .build());
+                }
             }
         }
         super.onResume();
@@ -99,23 +102,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     @Override
     public void navigateScanCodeToStoreDetail(Bundle bundle) {
         navController.navigate(R.id.action_scanCodeFragment_to_storeDetailsFragment, bundle);
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.d(TAG, "onLocation Changed: " + location);
-        if (store != null) {
-            Location currentLocation = new Location("");
-            currentLocation.setLatitude(store.getStoreLat());
-            currentLocation.setLongitude(store.getStoreLng());
-            Log.d(TAG, "onLocationChanged: " + currentLocation.distanceTo(location));
-            if (currentLocation.distanceTo(location) >= 1000) { // If store is not within 1000m of current location
-                store = null;
-                if (navController.getCurrentDestination().getId() != R.id.scanCodeFragment) {
-                    openScanCodeFragment();
-                }
-            }
-        }
     }
 
     public void openScanCodeFragment() {
@@ -129,26 +115,50 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     }
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        Log.d(TAG, "Status: " + status);
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        Log.d(TAG, "onProviderEnabled: ");
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            buildAlertMessageNoGps();
-        }
-    }
-
-
-    @Override
     public void getStoreDetails(Store store) {
         this.store = store;
+    }
+
+    protected void startLocationUpdates() {
+
+        // Create the location request to start receiving updates
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(locationMinTime);
+        mLocationRequest.setFastestInterval(0);
+
+        // Create LocationSettingsRequest object using location request
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(mLocationRequest);
+        LocationSettingsRequest locationSettingsRequest = builder.build();
+
+        SettingsClient settingsClient = LocationServices.getSettingsClient(this);
+        settingsClient.checkLocationSettings(locationSettingsRequest);
+
+        // new Google API SDK v11 uses getFusedLocationProviderClient(this)
+        getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest, new LocationCallback() {
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        // do work here
+                        onLocationChanged(locationResult.getLastLocation());
+                    }
+                },
+                Looper.myLooper());
+    }
+
+    public void onLocationChanged(Location location) {
+        // New location has now been determined
+        String msg = "Updated Location: " + location.getLatitude() + "," + location.getLongitude();
+        Log.d(TAG, "onLocationChanged: " + msg);
+        if (store != null) {
+            Location currentLocation = new Location("");
+            currentLocation.setLatitude(store.getStoreLat());
+            currentLocation.setLongitude(store.getStoreLng());
+            Log.d(TAG, "onLocationChanged: " + currentLocation.distanceTo(location));
+            if (currentLocation.distanceTo(location) >= 1000) { // If store is not within 1000m of current location
+                buildAlertMessageNotInStore();
+            }
+        }
     }
 
 
@@ -170,5 +180,28 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 });
         final AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    public void buildAlertMessageNotInStore() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("You seem to be too far, scan QR Code again?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        store = null;
+                        if (navController.getCurrentDestination().getId() != R.id.scanCodeFragment) {
+                            openScanCodeFragment();
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                        Toast.makeText(MainActivity.this, "Goodbye!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        if (!alert.isShowing()) alert.show();
     }
 }

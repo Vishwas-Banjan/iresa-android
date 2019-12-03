@@ -44,7 +44,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:gravity="center"
-        android:text="You'll get the magic number when you scan the QR Code at the front desk. We'll need access to your camera"
+        android:text="You'll get the magic number when you scan the QR Code at the front desk. We'll need access to your camera and location"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
