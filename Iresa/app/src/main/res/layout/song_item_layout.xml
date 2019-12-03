@@ -26,7 +26,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/songArtImageView"
+                android:id="@+id/nowPlayingSongArtImageView"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -35,7 +35,7 @@
                 app:srcCompat="@mipmap/music_logo_solid" />
 
             <TextView
-                android:id="@+id/songTitleTextView"
+                android:id="@+id/nowPlayingSongTitleTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -48,7 +48,7 @@
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/songArtistTextView"
                 app:layout_constraintEnd_toStartOf="@+id/heartClearImageView"
-                app:layout_constraintStart_toEndOf="@+id/songArtImageView"
+                app:layout_constraintStart_toEndOf="@+id/nowPlayingSongArtImageView"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -60,8 +60,8 @@
                 android:layout_marginRight="16dp"
                 android:maxLines="1"
                 app:layout_constraintEnd_toStartOf="@+id/heartClearImageView"
-                app:layout_constraintStart_toStartOf="@+id/songTitleTextView"
-                app:layout_constraintTop_toBottomOf="@+id/songTitleTextView" />
+                app:layout_constraintStart_toStartOf="@+id/nowPlayingSongTitleTextView"
+                app:layout_constraintTop_toBottomOf="@+id/nowPlayingSongTitleTextView" />
 
             <ImageView
                 android:id="@+id/heartClearImageView"
@@ -95,10 +95,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
-                app:layout_constraintBottom_toBottomOf="@+id/songArtImageView"
-                app:layout_constraintEnd_toEndOf="@+id/songArtImageView"
-                app:layout_constraintStart_toStartOf="@+id/songArtImageView"
-                app:layout_constraintTop_toTopOf="@+id/songArtImageView" />
+                app:layout_constraintBottom_toBottomOf="@+id/nowPlayingSongArtImageView"
+                app:layout_constraintEnd_toEndOf="@+id/nowPlayingSongArtImageView"
+                app:layout_constraintStart_toStartOf="@+id/nowPlayingSongArtImageView"
+                app:layout_constraintTop_toTopOf="@+id/nowPlayingSongArtImageView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

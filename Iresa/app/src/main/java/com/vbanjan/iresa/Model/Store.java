@@ -5,14 +5,17 @@ public class Store {
 
     String storeName, storeStreet, storeState, storeZip, storeCity;
     String storeDocumentID;
+    Double storeLat, storeLng;
 
-    public Store(String storeName, String storeStreet, String storeState, String storeZip, String storeCity, String storeDocumentID) {
+    public Store(String storeName, String storeStreet, String storeState, String storeZip, String storeCity, String storeDocumentID, Double storeLat, Double storeLng) {
         this.storeName = storeName;
         this.storeStreet = storeStreet;
         this.storeState = storeState;
         this.storeZip = storeZip;
         this.storeCity = storeCity;
         this.storeDocumentID = storeDocumentID;
+        this.storeLat = storeLat;
+        this.storeLng = storeLng;
     }
 
     @Override
@@ -24,7 +27,25 @@ public class Store {
                 ", storeZip='" + storeZip + '\'' +
                 ", storeCity='" + storeCity + '\'' +
                 ", storeDocumentID='" + storeDocumentID + '\'' +
+                ", storeLat=" + storeLat +
+                ", storeLng=" + storeLng +
                 '}';
+    }
+
+    public Double getStoreLat() {
+        return storeLat;
+    }
+
+    public void setStoreLat(Double storeLat) {
+        this.storeLat = storeLat;
+    }
+
+    public Double getStoreLng() {
+        return storeLng;
+    }
+
+    public void setStoreLng(Double storeLng) {
+        this.storeLng = storeLng;
     }
 
     public String getStoreName() {

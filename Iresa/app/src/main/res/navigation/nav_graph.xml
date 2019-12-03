@@ -13,6 +13,10 @@
         <action
             android:id="@+id/action_welcomeFragment_to_scanCodeFragment"
             app:destination="@id/scanCodeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
     </fragment>
@@ -23,13 +27,17 @@
         tools:layout="@layout/fragment_scan_code">
         <action
             android:id="@+id/action_scanCodeFragment_to_storeDetailsFragment"
-            app:destination="@id/storeDetailsFragment" />
+            app:destination="@id/storeDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/songsListFragment"
         android:name="com.vbanjan.iresa.Fragment.SongsListFragment"
         android:label="fragment_songs_list"
-        tools:layout="@layout/fragment_songs_list" >
+        tools:layout="@layout/fragment_songs_list">
         <argument
             android:name="storeDocID"
             app:argType="string" />
@@ -44,6 +52,10 @@
             app:argType="string" />
         <action
             android:id="@+id/action_storeDetailsFragment_to_songsListFragment"
-            app:destination="@id/songsListFragment" />
+            app:destination="@id/songsListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 </navigation>

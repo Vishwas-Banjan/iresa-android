@@ -2,6 +2,7 @@ package com.vbanjan.iresa.Fragment;
 
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -38,6 +39,7 @@ public class StoreDetailsFragment extends Fragment {
     String storeID = null;
     private ProgressDialog progressDialog;
     NavController navController;
+    private onStoreDetailsFragment mListener;
 
     public StoreDetailsFragment() {
         // Required empty public constructor
@@ -99,10 +101,13 @@ public class StoreDetailsFragment extends Fragment {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         store = new Store(document.getString("name"),
                                                 document.getString("address"), document.getString("state"),
-                                                document.getString("zipCode"), document.getString("city"), document.getId());
+                                                document.getString("zipCode"), document.getString("city"), document.getId(),
+                                                document.getDouble("latLoc"), document.getDouble("longLoc"));
                                     }
-                                    if (store != null)
+                                    if (store != null) {
+                                        mListener.getStoreDetails(store);
                                         showStoreDetails(store);
+                                    }
 
                                 } else {
                                     storeIdNotFound("Store ID not found! Please contact front desk!");
@@ -122,7 +127,7 @@ public class StoreDetailsFragment extends Fragment {
     public void storeIdNotFound(String message) {
         if (progressDialog.isShowing()) progressDialog.dismiss();
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-        navController.popBackStack(); //Go back if Store not found
+        mListener.openScanCodeFragment();
     }
 
     private void showStoreDetails(final Store store) {
@@ -133,6 +138,30 @@ public class StoreDetailsFragment extends Fragment {
         Log.d(TAG, "showStoreDetails: " + storeID);
         if (storeID != null) nextButton.setVisibility(View.VISIBLE);
 
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof onStoreDetailsFragment) {
+            mListener = (onStoreDetailsFragment) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface onStoreDetailsFragment {
+        void getStoreDetails(Store store);
+
+        void openScanCodeFragment();
     }
 
 }

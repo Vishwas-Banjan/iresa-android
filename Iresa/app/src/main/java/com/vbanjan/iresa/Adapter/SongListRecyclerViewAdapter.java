@@ -3,7 +3,6 @@ package com.vbanjan.iresa.Adapter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,9 +131,9 @@ public class SongListRecyclerViewAdapter extends RecyclerView.Adapter<SongListRe
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            songTitle = itemView.findViewById(R.id.songTitleTextView);
+            songTitle = itemView.findViewById(R.id.nowPlayingSongTitleTextView);
             songArtists = itemView.findViewById(R.id.songArtistTextView);
-            songArt = itemView.findViewById(R.id.songArtImageView);
+            songArt = itemView.findViewById(R.id.nowPlayingSongArtImageView);
             hearClear = itemView.findViewById(R.id.heartClearImageView);
             hearFill = itemView.findViewById(R.id.heartFillImageView);
             progressBar = itemView.findViewById(R.id.songArtProgressBar);
