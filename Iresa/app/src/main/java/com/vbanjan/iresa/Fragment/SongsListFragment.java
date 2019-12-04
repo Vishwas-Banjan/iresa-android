@@ -150,7 +150,10 @@ public class SongsListFragment extends Fragment {
                                 Toast.makeText(getContext(), "Oops! Something went wrong", Toast.LENGTH_SHORT).show();
                                 return;
                             }
-
+                            if (queryDocumentSnapshots.size() == 0){
+                                nowPlayingProgressBar.setVisibility(View.INVISIBLE);
+                                nowPlayingSongTitle.setText("No songs currently being playing..");
+                            }
                             for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                                 ArrayList<Artist> artistList = new ArrayList<>();
                                 ArrayList<String> upvoteList = new ArrayList<>();
