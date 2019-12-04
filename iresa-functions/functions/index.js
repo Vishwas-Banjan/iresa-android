@@ -5,18 +5,18 @@ admin.initializeApp();
 
 
 exports.updateUpvoteCount = functions.firestore
-    .document('OrderedList/{documentId}')
+    .document('stations/{storeId}/songList/{songId}')
     .onWrite((change, context) => {
+        if (!change.after.exists) {
+            return null;
+        }
         const newDocument = change.after.data();
-        const oldDocument = change.before.data();
         let count;
         if (newDocument.upvotes == undefined) {
             count = 0;
         } else {
             count = newDocument.upvotes.length;
-            if (newDocument.upvotes.length == oldDocument.upvotes.length) return null;
         }
-
         return change.after.ref.set({
             upvoteCount: count
         }, {merge: true});

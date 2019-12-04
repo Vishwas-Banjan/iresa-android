@@ -21,6 +21,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RunDashboard">
@@ -46,7 +47,10 @@
       <option name="presentableId" value="Default" />
       <updated>1574713436936</updated>
       <workItem from="1574713438208" duration="3359000" />
-      <workItem from="1574717028148" duration="577000" />
+      <workItem from="1574717028148" duration="806000" />
+      <workItem from="1574870134759" duration="427000" />
+      <workItem from="1575215518250" duration="821000" />
+      <workItem from="1575225146105" duration="154000" />
     </task>
     <servers />
   </component>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/welcomeFragment">
+
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.vbanjan.iresa.Fragment.WelcomeFragment"
+        android:label="fragment_welcome"
+        tools:layout="@layout/fragment_welcome">
+        <action
+            android:id="@+id/action_welcomeFragment_to_scanCodeFragment"
+            app:destination="@id/scanCodeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/scanCodeFragment"
+        android:name="com.vbanjan.iresa.Fragment.ScanCodeFragment"
+        android:label="fragment_scan_code"
+        tools:layout="@layout/fragment_scan_code">
+        <action
+            android:id="@+id/action_scanCodeFragment_to_storeDetailsFragment"
+            app:destination="@id/storeDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/songsListFragment"
+        android:name="com.vbanjan.iresa.Fragment.SongsListFragment"
+        android:label="fragment_songs_list"
+        tools:layout="@layout/fragment_songs_list">
+        <argument
+            android:name="storeDocID"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/storeDetailsFragment"
+        android:name="com.vbanjan.iresa.Fragment.StoreDetailsFragment"
+        android:label="fragment_store_details"
+        tools:layout="@layout/fragment_store_details">
+        <argument
+            android:name="storeSecretKey"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_storeDetailsFragment_to_songsListFragment"
+            app:destination="@id/songsListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+</navigation>

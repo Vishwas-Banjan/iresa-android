@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "232341377587",
+    "firebase_url": "https://iresa-musicapp.firebaseio.com",
+    "project_id": "iresa-musicapp",
+    "storage_bucket": "iresa-musicapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:232341377587:android:5ef70ef5f4d4d826388946",
+        "android_client_info": {
+          "package_name": "com.vbanjan.iresa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "232341377587-g4527la21ea1ek4j6uohdm9l3lv5j2gh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSWIKZ7fEl44jp8yFwEMr0iHh0EITL_wk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "232341377587-g4527la21ea1ek4j6uohdm9l3lv5j2gh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
