@@ -11,4 +11,16 @@ Iresa Android is one of the two components of Iresa's Playlist Management. This 
 - Vote for one or more songs
 - Update UI in real time whenever a new list of songs is available to vote
 
+<img src="./resources/screens/walthrough1.jpeg" data-canonical-src="./resources/screens/walthrough1.jpeg" width="200" />
+
+<img src="./resources/screens/walthrough2.jpeg" data-canonical-src="./resources/screens/walthrough2.jpeg" width="200" />
+
+<img src="./resources/screens/walthrough3.jpeg" data-canonical-src="./resources/screens/walthrough3.jpeg" width="200" />
+
+<img src="./resources/screens/scanpermission.jpeg" data-canonical-src="./resources/screens/scanpermission.jpeg" width="200" />
+
+<img src="./resources/screens/location.jpeg" data-canonical-src="./resources/screens/location.jpeg" width="200" />
+<img src="./resources/screens/scan.jpeg" data-canonical-src="./resources/screens/scan.jpeg" width="200" />
+<img src="./resources/screens/storedetails.jpeg" data-canonical-src="./resources/screens/storedetails.jpeg" width="200" />
+<img src="./resources/screens/songlist.jpeg" data-canonical-src="./resources/screens/songlist.jpeg" width="200" />
 
